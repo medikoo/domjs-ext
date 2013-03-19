@@ -10,7 +10,8 @@ var copy   = require('es5-ext/lib/Object/copy')
 onFileSelect = function () { submit.call(this.form); };
 
 module.exports = function (domjs) {
-	var form = domjs.form, input = domjs.input;
+	var form = domjs.form, input = domjs.input, div = domjs.div
+	  , label = domjs.label;
 
 	return function (options) {
 		var attrs, dom;
@@ -21,10 +22,13 @@ module.exports = function (domjs) {
 		delete attrs.inputName;
 		delete attrs.multiple;
 		delete attrs.progressContainer;
+		delete attrs.label;
 		dom = form(attrs, slice.call(arguments, 1),
-			input({ type: 'file', name: options.inputName || 'file',
-				multiple: (options.multiple == null) ? true : Boolean(options.multiple),
-				onchange: onFileSelect }));
+			div(label(options.label, input({ type: 'file',
+				name: options.inputName || 'file',
+				multiple: (options.multiple == null) ? true :
+							Boolean(options.multiple),
+					onchange: onFileSelect }))));
 		dom._progressContainer = options.progressContainer;
 		return dom;
 	};
