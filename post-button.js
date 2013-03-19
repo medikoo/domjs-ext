@@ -9,7 +9,7 @@ module.exports = function (domjs) {
 	  , script = domjs.script;
 
 	return function (attrs) {
-		var id, confirm, message;
+		var id, confirm, message, value;
 		attrs = Object(attrs);
 		if (!attrs.hasOwnProperty('method')) attrs.method = 'post';
 		if (!attrs.hasOwnProperty('id')) attrs.id = 'form-' + genId();
@@ -17,9 +17,12 @@ module.exports = function (domjs) {
 		if (attrs.confirm) {
 			confirm = true;
 			message = (attrs.confirm === true) ? null : String(attrs.confirm);
+			delete attrs.confirm;
 		}
+		value = attrs.value;
+		delete attrs.value;
 		return [form(attrs,
-			p(button({ type: 'submit' }, slice.call(arguments, 1)))),
+			p(button({ type: 'submit' }, value), slice.call(arguments, 1))),
 			confirm && script(function (formId, message) {
 				$.confirmSubmit(formId, message);
 			}, id, message)];
