@@ -9,26 +9,23 @@ module.exports = function (domjs) {
 	  , script = domjs.script;
 
 	return function (attrs) {
-		var id, confirm, message, value, formAttrs = {};
+		var id, confirm, message, value, buttonClass;
 		attrs = Object(attrs);
-		formAttrs.method = attrs.hasOwnProperty('method') ? attrs.method : 'post';
-		delete attrs.method;
-		id = formAttrs.id =
-			String(attrs.hasOwnProperty('id') ? attrs.id : 'form-' + genId());
-		delete attrs.id;
-		formAttrs.action = attrs.action;
-		delete attrs.action;
-
+		if (!attrs.hasOwnProperty('method')) attrs.method = 'post';
+		if (!attrs.hasOwnProperty('id')) attrs.id = 'form-' + genId();
+		id = String(attrs.id);
 		if (attrs.confirm) {
 			confirm = true;
 			message = (attrs.confirm === true) ? null : String(attrs.confirm);
 			delete attrs.confirm;
 		}
+		buttonClass = attrs.buttonClass;
+		delete attrs.buttonClass;
 		value = attrs.value;
 		delete attrs.value;
-		attrs.type = 'submit';
-		return [form(formAttrs,
-			p(button(attrs, value), slice.call(arguments, 1))),
+		return [form(attrs,
+			p(button({ type: 'submit', class: buttonClass }, value),
+				slice.call(arguments, 1))),
 			confirm && script(function (formId, message) {
 				$.confirmSubmit(formId, message);
 			}, id, message)];
