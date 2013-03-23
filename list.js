@@ -1,6 +1,7 @@
 'use strict';
 
-var flatten   = require('es5-ext/lib/Array/prototype/flatten')
+var compact   = require('es5-ext/lib/Array/prototype/compact')
+  , flatten   = require('es5-ext/lib/Array/prototype/flatten')
   , extend    = require('es5-ext/lib/Object/extend')
   , callable  = require('es5-ext/lib/Object/valid-callable')
   , value     = require('es5-ext/lib/Object/valid-value')
@@ -32,9 +33,8 @@ List = function (domjs, list, cb, thisArg) {
 
 extend(List.prototype, {
 	build: function () {
-		return flatten.call(map.call(this.list, function (item, index) {
-			return this.buildItem(item, index);
-		}, this));
+		return compact.call(flatten.call(map.call(this.list,
+			function (item, index) { return this.buildItem(item, index); }, this)));
 	},
 	buildItem: function (item, index) {
 		return this.domjs.safeCollect(this.cb.bind(this.thisArg, item, index,
