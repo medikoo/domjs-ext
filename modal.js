@@ -47,7 +47,12 @@ module.exports = function (domjs) {
 		self.hide = hide.bind(self);
 		self.toggle = toggle.bind(self);
 
-		if (!self.classList.contains('visible')) self.classList.add('hidden');
+		if (!self.classList.contains('visible')) {
+			self.classList.add('hidden');
+		} else {
+			if (current) hide.call(current);
+			current = self;
+		}
 		return self;
 	};
 };
