@@ -10,7 +10,9 @@ module.exports = function (domjs) {
 		if (current) hide.call(current);
 		this.classList.remove('hidden');
 		this.ownerDocument.body.classList.remove('modal-off');
-		this.ownerDocument.body.classList.add('modal-on');
+		if (this.curtain !== false) {
+			this.ownerDocument.body.classList.add('modal-on');
+		}
 		this.classList.add('visible');
 		current = this;
 		ee.emit.call(this, 'show');
@@ -41,8 +43,14 @@ module.exports = function (domjs) {
 		}
 	}, true);
 
-	return function () {
-		var self = fn.apply(this, arguments);
+	return function (/* options */) {
+		var options = Object(arguments[0]), self, curtain;
+		if (options.curtain != null) {
+			curtain = false;
+			delete options.curtain;
+		}
+		self = fn.apply(this, arguments);
+		if (curtain != null) self.curtain = curtain;
 		self.show = show.bind(self);
 		self.hide = hide.bind(self);
 		self.toggle = toggle.bind(self);
