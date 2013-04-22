@@ -38,6 +38,7 @@ module.exports = function (domjs) {
 		if (!current) return;
 		target = e.target;
 		if (target === current) return;
+		if (current.persistent) return;
 		if (!Boolean(current.compareDocumentPosition(target) & 16)) {
 			hide.call(current);
 		}
@@ -51,6 +52,7 @@ module.exports = function (domjs) {
 		}
 		self = fn.apply(this, arguments);
 		if (curtain != null) self.curtain = curtain;
+		self.persistent = options.persistent;
 		self.show = show.bind(self);
 		self.hide = hide.bind(self);
 		self.toggle = toggle.bind(self);
