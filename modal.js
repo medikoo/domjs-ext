@@ -51,6 +51,7 @@ module.exports = function (domjs) {
 			delete options.curtain;
 		}
 		self = ee(fn.apply(this, arguments));
+		self.classList.add('modal');
 		if (curtain != null) self.curtain = curtain;
 		self.persistent = options.persistent;
 		self.show = show.bind(self);
