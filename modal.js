@@ -1,6 +1,6 @@
 'use strict';
 
-var ee = require('event-emitter/lib/core').methods;
+var ee = require('event-emitter/lib/core');
 
 module.exports = function (domjs) {
 	var fn = domjs.div, current, show, hide, toggle;
@@ -15,7 +15,7 @@ module.exports = function (domjs) {
 		}
 		this.classList.add('visible');
 		current = this;
-		ee.emit.call(this, 'show');
+		this.emit('show');
 	};
 
 	hide = function () {
@@ -25,7 +25,7 @@ module.exports = function (domjs) {
 			this.ownerDocument.body.classList.add('modal-off');
 			this.classList.add('hidden');
 			current = null;
-			ee.emit.call(this, 'hide');
+			this.emit('hide');
 		}
 	};
 
@@ -50,7 +50,7 @@ module.exports = function (domjs) {
 			curtain = false;
 			delete options.curtain;
 		}
-		self = fn.apply(this, arguments);
+		self = ee(fn.apply(this, arguments));
 		if (curtain != null) self.curtain = curtain;
 		self.persistent = options.persistent;
 		self.show = show.bind(self);
