@@ -1,13 +1,13 @@
 'use strict';
 
-var copy   = require('es5-ext/lib/Object/copy')
-  , submit = require('dom-ext/lib/HTMLFormElement/prototype/submit-by-event')
+var copy     = require('es5-ext/lib/Object/copy')
+  , dispatch = require('dom-ext/lib/HTMLElement/prototype/dispatch-event-2')
 
   , slice = Array.prototype.slice
 
   , onFileSelect;
 
-onFileSelect = function () { submit.call(this.form); };
+onFileSelect = function () { dispatch.call(this.form, 'submit'); };
 
 module.exports = function (domjs) {
 	var form = domjs.form, input = domjs.input, div = domjs.div
