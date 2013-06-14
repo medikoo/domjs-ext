@@ -60,9 +60,15 @@ Attr = function (document, name, value, onTrue, onFalse) {
 	this.onTrue = onTrue;
 	this.onFalse = onFalse;
 	value.on('change', function (value) {
+		var attrValue;
 		value = Boolean(value);
 		if (value === current) return;
-		attr.value = value ? this.true : this.false;
+		attrValue = value ? this.true : this.false;
+		if ((attrValue != null) && attr.ownerElement) {
+			attr.ownerElement.setAttribute(attr.name, attrValue);
+		} else {
+			attr.value = attrValue;
+		}
 		current = value;
 	}.bind(this));
 	current = Boolean(value.value);
