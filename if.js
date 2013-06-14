@@ -2,7 +2,7 @@
 
 var d          = require('es5-ext/lib/Object/descriptor')
   , isFunction = require('es5-ext/lib/Function/is-function')
-  , isMutable  = require('mutable-emitter-value/is')
+  , isMutable  = require('mutable/is')
   , normalize  = require('dom-ext/lib/Document/prototype/normalize')
   , removeEl   = require('dom-ext/lib/Element/prototype/remove')
 
