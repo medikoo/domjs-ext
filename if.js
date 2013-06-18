@@ -56,11 +56,13 @@ Object.defineProperties(DOM.prototype, {
 	})
 });
 
-Attr = function (document, name, value, onTrue, onFalse) {
-	var attr = document.createAttribute(name), current;
+Attr = function (element, name, value, onTrue, onFalse) {
+	var current, attrValue;
 	if (!isMutable(value)) {
-		attr.value = this.normalize(value ? onTrue : onFalse);
-		return attr;
+		attrValue = this.normalize(value ? onTrue : onFalse);
+		if (attrValue == null) element.removeAttribute(name);
+		else element.setAttribute(name, attrValue);
+		return attrValue;
 	}
 	this.onTrue = onTrue;
 	this.onFalse = onFalse;
@@ -69,16 +71,15 @@ Attr = function (document, name, value, onTrue, onFalse) {
 		value = Boolean(value);
 		if (value === current) return;
 		attrValue = value ? this.true : this.false;
-		if ((attrValue != null) && attr.ownerElement) {
-			attr.ownerElement.setAttribute(attr.name, attrValue);
-		} else {
-			attr.value = attrValue;
-		}
+		if (attrValue == null) element.removeAttribute(name);
+		else element.setAttribute(name, attrValue);
 		current = value;
 	}.bind(this));
 	current = Boolean(value.value);
-	attr.value = this[current ? 'true' : 'false'];
-	return attr;
+	attrValue = this[current ? 'true' : 'false'];
+	if (attrValue == null) element.removeAttribute(name);
+	else element.setAttribute(name, attrValue);
+	return value;
 };
 Object.defineProperties(Attr.prototype, {
 	resolve: d(function (value) {
@@ -106,10 +107,10 @@ module.exports = function (domjs) {
 				initialized = true;
 				return new DOM(document, value, onTrue, onFalse);
 			},
-			toDOMAttr: function (document, name) {
+			toDOMAttr: function (element, name) {
 				if (initialized) throw new Error("Cannot convert to DOM twice");
 				initialized = true;
-				return new Attr(document, name, value, onTrue, onFalse);
+				return new Attr(element, name, value, onTrue, onFalse);
 			}
 		};
 	};
