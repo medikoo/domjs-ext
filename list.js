@@ -6,7 +6,6 @@ var compact   = require('es5-ext/lib/Array/prototype/compact')
   , callable  = require('es5-ext/lib/Object/valid-callable')
   , value     = require('es5-ext/lib/Object/valid-value')
   , memoize   = require('memoizee/lib/regular')
-  , normalize = require('dom-ext/lib/Document/prototype/normalize')
   , remove    = require('dom-ext/lib/Element/prototype/remove')
 
   , map = Array.prototype.map
@@ -17,7 +16,6 @@ List = function (domjs, list, cb, thisArg) {
 	this.domjs = domjs;
 	this.list = list;
 	this.thisArg = thisArg;
-	this.normalize = normalize.bind(domjs.document);
 	this.location = domjs.document.createTextNode("");
 	this.cb = cb;
 	if (typeof list.on === 'function') {

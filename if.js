@@ -1,6 +1,7 @@
 'use strict';
 
-var d          = require('es5-ext/lib/Object/descriptor')
+var toArray    = require('es5-ext/lib/Array/from')
+  , d          = require('es5-ext/lib/Object/descriptor')
   , isFunction = require('es5-ext/lib/Function/is-function')
   , isMutable  = require('mutable/is')
   , normalize  = require('dom-ext/lib/Document/prototype/normalize')
@@ -11,12 +12,10 @@ var d          = require('es5-ext/lib/Object/descriptor')
   , DOM, Attr;
 
 DOM = function (document, value, onTrue, onFalse) {
-	var df = document.createDocumentFragment(), current;
+	var df, current;
 	this.document = document;
-	if (!isMutable(value)) {
-		this.resolve(value ? onTrue : onFalse).forEach(df.appendChild, df);
-		return df;
-	}
+	if (!isMutable(value)) return this.resolve(value ? onTrue : onFalse);
+	df = document.createDocumentFragment();
 	this.dom = document.createTextNode("");
 	this.onTrue = onTrue;
 	if (isNode(onTrue)) removeNode.call(onTrue);
@@ -45,12 +44,14 @@ Object.defineProperties(DOM.prototype, {
 		return normalize.call(this.document, isFunction(value) ? value() : value);
 	}),
 	true: d.gs(function () {
-		defineProperty(this, 'true', d(this.resolve(this.onTrue)));
+		defineProperty(this, 'true',
+			d(toArray(this.resolve(this.onTrue).childNodes)));
 		delete this.onTrue;
 		return this.true;
 	}),
 	false: d.gs(function () {
-		defineProperty(this, 'false', d(this.resolve(this.onFalse)));
+		defineProperty(this, 'false',
+			d(toArray(this.resolve(this.onFalse).childNodes)));
 		delete this.onFalse;
 		return this.false;
 	})
