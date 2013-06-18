@@ -14,7 +14,7 @@ DOM = function (document, value, onTrue, onFalse) {
 	var df = document.createDocumentFragment(), current;
 	this.document = document;
 	if (!isMutable(value)) {
-		this.normalize(value ? onTrue : onFalse).forEach(df.appendChild, df);
+		this.resolve(value ? onTrue : onFalse).forEach(df.appendChild, df);
 		return df;
 	}
 	this.dom = document.createTextNode("");
@@ -59,7 +59,7 @@ Object.defineProperties(DOM.prototype, {
 Attr = function (element, name, value, onTrue, onFalse) {
 	var current, attrValue;
 	if (!isMutable(value)) {
-		attrValue = this.normalize(value ? onTrue : onFalse);
+		attrValue = this.resolve(value ? onTrue : onFalse);
 		if (attrValue == null) element.removeAttribute(name);
 		else element.setAttribute(name, attrValue);
 		return attrValue;
