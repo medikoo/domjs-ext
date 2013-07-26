@@ -13,7 +13,5 @@ unbind = function (data) {
 };
 
 module.exports = function (domjs) {
-	return function (cond, t, f) {
-		return _if(cond, unbind(t), unbind(f));
-	};
+	return function (cond, t, f) { return _if(cond, unbind(t), unbind(f)); };
 };
