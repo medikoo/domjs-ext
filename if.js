@@ -8,7 +8,7 @@ var remove = require('dom-ext/lib/Node/prototype/remove')
 unbind = function (data) {
 	if (data == null) return data;
 	if (data.parentNode) remove.call(data);
-	else if (isArray(data)) data.forEach(data, unbind);
+	else if (isArray(data)) data.forEach(unbind);
 	return data;
 };
 
