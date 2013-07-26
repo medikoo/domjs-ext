@@ -1,12 +1,19 @@
 'use strict';
 
 var remove = require('dom-ext/lib/Node/prototype/remove')
-  , _if    = require('mutable/if');
+  , _if    = require('mutable/if')
+
+  , isArray = Array.isArray, unbind;
+
+unbind = function (data) {
+	if (data == null) return data;
+	if (data.parentNode) remove.call(data);
+	else if (isArray(data)) data.forEach(data, unbind);
+	return data;
+};
 
 module.exports = function (domjs) {
 	return function (cond, t, f) {
-		if (t && t.parentNode) remove.call(t);
-		if (f && f.parentNode) remove.call(f);
-		return _if(cond, t, f);
+		return _if(cond, unbind(t), unbind(f));
 	};
 };
