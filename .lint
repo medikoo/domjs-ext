@@ -14,3 +14,6 @@ plusplus
 ./legacy.js
 evil
 predef+ $
+
+./post-button.js
+predef+ $
