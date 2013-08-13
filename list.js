@@ -47,8 +47,9 @@ extend(List.prototype, {
 	}
 });
 
-module.exports = function (domjs) {
-	return function (list, cb/*, thisArg*/) {
+module.exports = function (domjs/*, options*/) {
+	var options = arguments[1], name = (options && options.name) || 'list';
+	domjs.ns[name] = function (list, cb/*, thisArg*/) {
 		return new List(domjs, value(list), callable(cb), arguments[2]);
 	};
 };

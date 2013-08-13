@@ -9,11 +9,11 @@ var copy     = require('es5-ext/lib/Object/copy')
 
 onFileSelect = function () { dispatch.call(this.form, 'submit'); };
 
-module.exports = function (domjs) {
+module.exports = function (domjs/*, options*/) {
 	var form = domjs.ns.form, input = domjs.ns.input, div = domjs.ns.div
-	  , label = domjs.ns.label;
+	  , label = domjs.ns.label, options = arguments[1];
 
-	return function (options) {
+	domjs.ns[(options && options.name) || 'uploadButton'] = function (options) {
 		var attrs, dom;
 		options = Object(options);
 		attrs = copy(options);

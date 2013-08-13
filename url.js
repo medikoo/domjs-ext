@@ -4,8 +4,9 @@ var arrayFrom = require('es5-ext/lib/Array/from')
 
   , forEach = Array.prototype.forEach;
 
-module.exports = function (domjs) {
-	return function (/*,  …paths*/) {
+module.exports = function (domjs/*, options*/) {
+	var options = arguments[1];
+	domjs.ns[(options && options.name) || 'url'] = function (/*,  …paths*/) {
 		var paths = arguments, base, query, hash, path;
 		if (this) {
 			paths = arrayFrom(paths);

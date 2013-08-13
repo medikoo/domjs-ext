@@ -4,11 +4,11 @@ var genId = require('time-uuid')
 
   , slice = Array.prototype.slice;
 
-module.exports = function (domjs) {
+module.exports = function (domjs/*, options*/) {
 	var form = domjs.ns.form, p = domjs.ns.p, button = domjs.ns.button
-	  , script = domjs.ns.script;
+	  , script = domjs.ns.script, options = arguments[1];
 
-	return function (attrs) {
+	domjs.ns[(options && options.name) || 'postButton'] = function (attrs) {
 		var id, confirm, message, value, buttonClass;
 		attrs = Object(attrs);
 		if (!attrs.hasOwnProperty('method')) attrs.method = 'post';

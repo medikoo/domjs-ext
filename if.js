@@ -12,6 +12,9 @@ unbind = function (data) {
 	return data;
 };
 
-module.exports = function (domjs) {
-	return function (cond, t, f) { return _if(cond, unbind(t), unbind(f)); };
+module.exports = function (domjs/*, options*/) {
+	var options = arguments[1];
+	domjs.ns[(options && options.name) || '_if'] = function (cond, t, f) {
+		return _if(cond, unbind(t), unbind(f));
+	};
 };
