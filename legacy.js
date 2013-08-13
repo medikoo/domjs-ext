@@ -1,12 +1,16 @@
 'use strict';
 
-var slice = Array.prototype.slice;
+var plainReplaceAll = require('es5-ext/lib/String/prototype/plain-replace-all')
 
-module.exports = function (domjs) {
-	var script = domjs.ns.script;
+  , slice = Array.prototype.slice
+  , caller = function (name, args) { $[name].apply($, args); };
+
+module.exports = function (domjs, globalName) {
+	var script = domjs.ns.script, fn = caller;
+	if ((globalName != null) && (String(globalName) !== '$')) {
+		fn = eval('(' + plainReplaceAll.call(fn, '$', globalName) + ')');
+	}
 	return function (name) {
-		return script(function (name, args) {
-			$[name].apply($, args);
-		}, name, slice.call(arguments, 1));
+		return script(fn, name, slice.call(arguments, 1));
 	};
 };
