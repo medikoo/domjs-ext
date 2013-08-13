@@ -3,7 +3,7 @@
 var slice = Array.prototype.slice;
 
 module.exports = function (domjs) {
-	var script = domjs.script;
+	var script = domjs.ns.script;
 	return function (name) {
 		return script(function (name, args) {
 			$[name].apply($, args);

@@ -10,8 +10,8 @@ var copy     = require('es5-ext/lib/Object/copy')
 onFileSelect = function () { dispatch.call(this.form, 'submit'); };
 
 module.exports = function (domjs) {
-	var form = domjs.form, input = domjs.input, div = domjs.div
-	  , label = domjs.label;
+	var form = domjs.ns.form, input = domjs.ns.input, div = domjs.ns.div
+	  , label = domjs.ns.label;
 
 	return function (options) {
 		var attrs, dom;

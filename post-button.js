@@ -5,8 +5,8 @@ var genId = require('time-uuid')
   , slice = Array.prototype.slice;
 
 module.exports = function (domjs) {
-	var form = domjs.form, p = domjs.p, button = domjs.button
-	  , script = domjs.script;
+	var form = domjs.ns.form, p = domjs.ns.p, button = domjs.ns.button
+	  , script = domjs.ns.script;
 
 	return function (attrs) {
 		var id, confirm, message, value, buttonClass;
