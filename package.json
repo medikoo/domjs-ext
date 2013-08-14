@@ -24,9 +24,6 @@
     "overlay": "git://github.com/medikoo/overlay.git",
     "time-uuid": "git://github.com/medikoo/time-uuid.git"
   },
-  "peerDependencies": {
-    "domjs": "git://github.com/medikoo/domjs.git"
-  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
