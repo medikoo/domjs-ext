@@ -6,7 +6,7 @@ var compact   = require('es5-ext/array/#/compact')
   , callable  = require('es5-ext/object/valid-callable')
   , value     = require('es5-ext/object/valid-value')
   , memoize   = require('memoizee/lib/regular')
-  , remove    = require('dom-ext/lib/Element/prototype/remove')
+  , remove    = require('dom-ext/element/#/remove')
 
   , map = Array.prototype.map
   , List;

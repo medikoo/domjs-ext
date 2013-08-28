@@ -1,6 +1,6 @@
 'use strict';
 
-var remove = require('dom-ext/lib/Node/prototype/remove')
+var remove = require('dom-ext/node/#/remove')
   , _if    = require('mutable/if')
 
   , isArray = Array.isArray, unbind;
