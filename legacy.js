@@ -1,6 +1,6 @@
 'use strict';
 
-var plainReplaceAll = require('es5-ext/lib/String/prototype/plain-replace-all')
+var plainReplaceAll = require('es5-ext/string/#/plain-replace-all')
 
   , slice = Array.prototype.slice
   , caller = function (name, args) { $[name].apply($, args); };

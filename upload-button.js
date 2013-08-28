@@ -1,6 +1,6 @@
 'use strict';
 
-var copy     = require('es5-ext/lib/Object/copy')
+var copy     = require('es5-ext/object/copy')
   , dispatch = require('dom-ext/lib/HTMLElement/prototype/dispatch-event-2')
 
   , slice = Array.prototype.slice

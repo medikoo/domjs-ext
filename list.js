@@ -1,10 +1,10 @@
 'use strict';
 
-var compact   = require('es5-ext/lib/Array/prototype/compact')
-  , flatten   = require('es5-ext/lib/Array/prototype/flatten')
-  , extend    = require('es5-ext/lib/Object/extend')
-  , callable  = require('es5-ext/lib/Object/valid-callable')
-  , value     = require('es5-ext/lib/Object/valid-value')
+var compact   = require('es5-ext/array/#/compact')
+  , flatten   = require('es5-ext/array/#/flatten')
+  , extend    = require('es5-ext/object/extend')
+  , callable  = require('es5-ext/object/valid-callable')
+  , value     = require('es5-ext/object/valid-value')
   , memoize   = require('memoizee/lib/regular')
   , remove    = require('dom-ext/lib/Element/prototype/remove')
 

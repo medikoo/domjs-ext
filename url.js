@@ -1,6 +1,6 @@
 'use strict';
 
-var arrayFrom = require('es5-ext/lib/Array/from')
+var arrayFrom = require('es5-ext/array/from')
 
   , forEach = Array.prototype.forEach;
 
