@@ -2,16 +2,16 @@
 
 var compact   = require('es5-ext/array/#/compact')
   , flatten   = require('es5-ext/array/#/flatten')
-  , extend    = require('es5-ext/object/extend')
+  , d         = require('es5-ext/object/descriptor')
   , callable  = require('es5-ext/object/valid-callable')
   , value     = require('es5-ext/object/valid-value')
   , memoize   = require('memoizee/lib/regular')
   , remove    = require('dom-ext/element/#/remove')
 
   , map = Array.prototype.map
-  , List;
+  , DOMList, List;
 
-List = function (domjs, list, cb, thisArg) {
+DOMList = function (domjs, list, cb, thisArg) {
 	var df;
 	this.domjs = domjs;
 	this.list = list;
@@ -29,22 +29,31 @@ List = function (domjs, list, cb, thisArg) {
 	return df;
 };
 
-extend(List.prototype, {
-	build: function () {
+Object.defineProperties(DOMList.prototype, {
+	build: d(function () {
 		return compact.call(flatten.call(map.call(this.list,
 			function (item, index) { return this.buildItem(item, index); }, this)));
-	},
-	buildItem: function (item, index) {
+	}),
+	buildItem: d(function (item, index) {
 		return this.domjs.safeCollect(this.cb.bind(this.thisArg, item, index,
 			this.list));
-	},
-	reload: function () {
+	}),
+	reload: d(function () {
 		this.current.forEach(function (el) { remove.call(el); });
 		this.current = this.build();
 		this.current.forEach(function (el) {
 			this.parentNode.insertBefore(el, this);
 		}, this.location);
-	}
+	})
+});
+
+List = function (domjs, list, cb, thisArg) {
+	this.args = arguments;
+};
+Object.defineProperties(List.prototype, {
+	toDOM: d(function () {
+		return new DOMList(this.args[0], this.args[1], this.args[2], this.args[3]);
+	})
 });
 
 module.exports = function (domjs/*, options*/) {
