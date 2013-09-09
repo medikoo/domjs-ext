@@ -17,6 +17,9 @@ module.exports = function (domjs/*, options*/) {
 		query = [];
 		hash = '';
 		forEach.call(paths, function (path) {
+			if (path == null) return;
+			path = String(path);
+			if (!path) return;
 			if (path[0] === '?') query.push(path.slice(1));
 			else if (path[0] === '#') hash = path;
 			else base.push(path);
