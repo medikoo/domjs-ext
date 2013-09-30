@@ -2,9 +2,9 @@
 
 var compact   = require('es5-ext/array/#/compact')
   , flatten   = require('es5-ext/array/#/flatten')
-  , d         = require('es5-ext/object/descriptor')
   , callable  = require('es5-ext/object/valid-callable')
   , value     = require('es5-ext/object/valid-value')
+  , d         = require('d/d')
   , memoize   = require('memoizee/lib/regular')
   , remove    = require('dom-ext/element/#/remove')
 
