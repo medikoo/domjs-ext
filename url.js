@@ -1,6 +1,6 @@
 'use strict';
 
-var arrayFrom = require('es5-ext/array/from')
+var aFrom = require('es5-ext/array/from')
 
   , forEach = Array.prototype.forEach;
 
@@ -9,7 +9,7 @@ module.exports = function (domjs/*, options*/) {
 	domjs.ns[(options && options.name) || 'url'] = function (/*,  …paths*/) {
 		var paths = arguments, base, query, hash, path;
 		if (this) {
-			paths = arrayFrom(paths);
+			paths = aFrom(paths);
 			paths.unshift(this);
 		}
 		if (!paths.length) return '/';
