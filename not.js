@@ -1,6 +1,6 @@
 'use strict';
 
-var not = require('mutable/not');
+var not = require('observable-value/not');
 
 module.exports = function (domjs/*, name*/) {
 	var options = arguments[1];

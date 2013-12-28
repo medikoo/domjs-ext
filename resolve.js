@@ -1,6 +1,6 @@
 'use strict';
 
-var resolve = require('mutable/resolve');
+var resolve = require('observable-value/resolve');
 
 module.exports = function (domjs/*, name*/) {
 	var options = arguments[1];

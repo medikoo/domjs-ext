@@ -1,6 +1,6 @@
 'use strict';
 
-var eqSome = require('mutable/eq-some');
+var eqSome = require('observable-value/eq-some');
 
 module.exports = function (domjs/*, options*/) {
 	var options = arguments[1];

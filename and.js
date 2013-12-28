@@ -1,6 +1,6 @@
 'use strict';
 
-var and = require('mutable/and');
+var and = require('observable-value/and');
 
 module.exports = function (domjs/*, options*/) {
 	var options = arguments[1];

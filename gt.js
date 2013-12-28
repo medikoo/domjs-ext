@@ -1,6 +1,6 @@
 'use strict';
 
-var gt = require('mutable/gt');
+var gt = require('observable-value/gt');
 
 module.exports = function (domjs/*, options*/) {
 	var options = arguments[1];

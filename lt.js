@@ -1,6 +1,6 @@
 'use strict';
 
-var lt = require('mutable/lt');
+var lt = require('observable-value/lt');
 
 module.exports = function (domjs/*, options*/) {
 	var options = arguments[1];

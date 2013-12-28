@@ -1,6 +1,6 @@
 'use strict';
 
-var or = require('mutable/or');
+var or = require('observable-value/or');
 
 module.exports = function (domjs/*, name*/) {
 	var options = arguments[1];

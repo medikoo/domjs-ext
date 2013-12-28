@@ -1,6 +1,6 @@
 'use strict';
 
-var gtOrEq = require('mutable/gt-or-eq');
+var gtOrEq = require('observable-value/gt-or-eq');
 
 module.exports = function (domjs/*, options*/) {
 	var options = arguments[1];

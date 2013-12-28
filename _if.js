@@ -1,7 +1,7 @@
 'use strict';
 
 var remove = require('dom-ext/node/#/remove')
-  , _if    = require('mutable/if')
+  , _if    = require('observable-value/if')
 
   , isArray = Array.isArray, unbind;
 

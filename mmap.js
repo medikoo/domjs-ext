@@ -1,6 +1,6 @@
 'use strict';
 
-var map = require('mutable/map');
+var map = require('observable-value/map');
 
 module.exports = function (domjs/*, name*/) {
 	var options = arguments[1];
