@@ -1,12 +1,14 @@
 'use strict';
 
-var compact   = require('es5-ext/array/#/compact')
-  , flatten   = require('es5-ext/array/#/flatten')
-  , callable  = require('es5-ext/object/valid-callable')
-  , value     = require('es5-ext/object/valid-value')
-  , d         = require('d/d')
-  , memoize   = require('memoizee/lib/regular')
-  , remove    = require('dom-ext/element/#/remove')
+var compact      = require('es5-ext/array/#/compact')
+  , flatten      = require('es5-ext/array/#/flatten')
+  , isList       = require('es5-ext/object/is-list')
+  , callable     = require('es5-ext/object/valid-callable')
+  , value        = require('es5-ext/object/valid-value')
+  , d            = require('d/d')
+  , memoize      = require('memoizee/lib/regular')
+  , isObservable = require('observable-value/is-observable')
+  , remove       = require('dom-ext/element/#/remove')
 
   , map = Array.prototype.map
   , DOMList, List;
@@ -18,7 +20,7 @@ DOMList = function (domjs, list, cb, thisArg) {
 	this.thisArg = thisArg;
 	this.location = domjs.document.createTextNode("");
 	this.cb = cb;
-	if (typeof list.on === 'function') {
+	if (isObservable(list)) {
 		this.buildItem = memoize(this.buildItem.bind(this), { length: 1 });
 		list.on('change', this.reload.bind(this));
 	}
@@ -31,8 +33,16 @@ DOMList = function (domjs, list, cb, thisArg) {
 
 Object.defineProperties(DOMList.prototype, {
 	build: d(function () {
-		return compact.call(flatten.call(map.call(this.list,
-			function (item, index) { return this.buildItem(item, index); }, this)));
+		var result;
+		if (isList(this.list)) {
+			return compact.call(flatten.call(map.call(this.list,
+				function (item, index) { return this.buildItem(item, index); }, this)));
+		}
+		result = [];
+		this.list.forEach(function (item, key) {
+			result.push(this.buildItem(item, key));
+		}, this);
+		return result;
 	}),
 	buildItem: d(function (item, index) {
 		return this.domjs.safeCollect(this.cb.bind(this.thisArg, item, index,
