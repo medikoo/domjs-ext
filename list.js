@@ -42,7 +42,7 @@ Object.defineProperties(DOMList.prototype, {
 		this.list.forEach(function (item, key) {
 			result.push(this.buildItem(item, key));
 		}, this);
-		return result;
+		return compact.call(flatten.call(result));
 	}),
 	buildItem: d(function (item, index) {
 		return this.domjs.safeCollect(this.cb.bind(this.thisArg, item, index,
