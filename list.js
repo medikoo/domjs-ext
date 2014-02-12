@@ -2,7 +2,7 @@
 
 var compact      = require('es5-ext/array/#/compact')
   , flatten      = require('es5-ext/array/#/flatten')
-  , isList       = require('es5-ext/object/is-list')
+  , isArrayLike  = require('es5-ext/object/is-array-like')
   , callable     = require('es5-ext/object/valid-callable')
   , value        = require('es5-ext/object/valid-value')
   , d            = require('d/d')
@@ -34,7 +34,7 @@ DOMList = function (domjs, list, cb, thisArg) {
 Object.defineProperties(DOMList.prototype, {
 	build: d(function () {
 		var result;
-		if (isList(this.list)) {
+		if (isArrayLike(this.list)) {
 			return compact.call(flatten.call(map.call(this.list,
 				function (item, index) { return this.buildItem(item, index); }, this)));
 		}
