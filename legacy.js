@@ -3,7 +3,15 @@
 var plainReplaceAll = require('es5-ext/string/#/plain-replace-all')
 
   , slice = Array.prototype.slice
-  , caller = function (name, args) { $[name].apply($, args); };
+  , caller;
+
+caller = function (name, args) {
+	if (typeof $[name] !== 'function') {
+		throw new TypeError(name + " not accessible on $" +
+			" Make sure utility is imported");
+	}
+	$[name].apply($, args);
+};
 
 module.exports = function (domjs/*, options*/) {
 	var script = domjs.ns.script, fn = caller, options = arguments[1];
