@@ -1,14 +1,15 @@
 'use strict';
 
-var compact      = require('es5-ext/array/#/compact')
-  , flatten      = require('es5-ext/array/#/flatten')
-  , isArrayLike  = require('es5-ext/object/is-array-like')
-  , callable     = require('es5-ext/object/valid-callable')
-  , value        = require('es5-ext/object/valid-value')
-  , d            = require('d')
-  , memoize      = require('memoizee/lib/regular')
-  , isObservable = require('observable-value/is-observable')
-  , remove       = require('dom-ext/element/#/remove')
+var compact       = require('es5-ext/array/#/compact')
+  , flatten       = require('es5-ext/array/#/flatten')
+  , isArrayLike   = require('es5-ext/object/is-array-like')
+  , callable      = require('es5-ext/object/valid-callable')
+  , value         = require('es5-ext/object/valid-value')
+  , d             = require('d')
+  , memoize       = require('memoizee/plain')
+  , getNormalizer = require('memoizee/normalizers/get-1')
+  , isObservable  = require('observable-value/is-observable')
+  , remove        = require('dom-ext/element/#/remove')
 
   , map = Array.prototype.map
   , DOMList, List;
@@ -21,7 +22,7 @@ DOMList = function (domjs, list, cb, thisArg) {
 	this.location = domjs.document.createTextNode("");
 	this.cb = cb;
 	if (isObservable(list)) {
-		this.buildItem = memoize(this.buildItem.bind(this), { length: 1 });
+		this.buildItem = memoize(this.buildItem.bind(this), { normalizer: getNormalizer() });
 		list.on('change', this.reload.bind(this));
 	}
 	this.current = this.build();
