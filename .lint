@@ -11,6 +11,8 @@ ass
 nomen
 plusplus
 
+predef+ window
+
 ./legacy.js
 evil
 predef+ $
