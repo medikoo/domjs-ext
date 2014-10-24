@@ -1,7 +1,8 @@
 'use strict';
 
-var remove = require('dom-ext/node/#/remove')
-  , _if    = require('observable-value/if')
+var remove   = require('dom-ext/node/#/remove')
+  , _if      = require('observable-value/if')
+  , validate = require('./lib/validate-injection')
 
   , isArray = Array.isArray, unbind;
 
@@ -15,6 +16,6 @@ unbind = function (data) {
 module.exports = function (domjs/*, options*/) {
 	var options = arguments[1];
 	domjs.ns[(options && options.name) || '_if'] = function (cond, t, f) {
-		return _if(cond, unbind(t), unbind(f));
+		return validate(_if(cond, unbind(t), unbind(f)));
 	};
 };
