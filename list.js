@@ -9,7 +9,7 @@ var compact       = require('es5-ext/array/#/compact')
   , memoize       = require('memoizee/plain')
   , getNormalizer = require('memoizee/normalizers/get-1')
   , isObservable  = require('observable-value/is-observable')
-  , remove        = require('dom-ext/element/#/remove')
+  , remove        = require('dom-ext/node/#/remove')
 
   , map = Array.prototype.map
   , DOMList, List;
