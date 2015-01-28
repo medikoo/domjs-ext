@@ -23,9 +23,9 @@ DOMList = function (domjs, list, cb, thisArg) {
 	this.cb = cb;
 	if (isObservable(list)) {
 		this.buildItem = memoize(this.buildItem.bind(this), { normalizer: getNormalizer() });
-		list.on('change', this.reload.bind(this));
 	}
 	this.current = this.build();
+	if (isObservable(list)) list.on('change', this.reload.bind(this));
 	df = domjs.document.createDocumentFragment();
 	this.current.forEach(df.appendChild, df);
 	df.appendChild(this.location);
