@@ -1,17 +1,16 @@
 'use strict';
 
-var compact       = require('es5-ext/array/#/compact')
+var aFrom         = require('es5-ext/array/from')
+  , compact       = require('es5-ext/array/#/compact')
   , flatten       = require('es5-ext/array/#/flatten')
-  , isArrayLike   = require('es5-ext/object/is-array-like')
+  , iterable      = require('es5-ext/iterable/validate-object')
   , callable      = require('es5-ext/object/valid-callable')
-  , value         = require('es5-ext/object/valid-value')
   , d             = require('d')
   , memoize       = require('memoizee/plain')
   , getNormalizer = require('memoizee/normalizers/get-1')
   , isObservable  = require('observable-value/is-observable')
   , remove        = require('dom-ext/node/#/remove')
 
-  , map = Array.prototype.map
   , DOMList, List;
 
 DOMList = function (domjs, list, cb, thisArg) {
@@ -34,16 +33,8 @@ DOMList = function (domjs, list, cb, thisArg) {
 
 Object.defineProperties(DOMList.prototype, {
 	build: d(function () {
-		var result;
-		if (isArrayLike(this.list)) {
-			return compact.call(flatten.call(map.call(this.list,
-				function (item, index) { return this.buildItem(item, index); }, this)));
-		}
-		result = [];
-		this.list.forEach(function (item, key) {
-			result.push(this.buildItem(item, key));
-		}, this);
-		return compact.call(flatten.call(result));
+		return compact.call(flatten.call(aFrom(this.list,
+			function (item, index) { return this.buildItem(item, index); }, this)));
 	}),
 	buildItem: d(function (item, index) {
 		return this.domjs.safeCollect(this.cb.bind(this.thisArg, item, index,
@@ -70,6 +61,6 @@ Object.defineProperties(List.prototype, {
 module.exports = function (domjs/*, options*/) {
 	var options = arguments[1], name = (options && options.name) || 'list';
 	domjs.ns[name] = function (list, cb/*, thisArg*/) {
-		return new List(domjs, value(list), callable(cb), arguments[2]);
+		return new List(domjs, iterable(list), callable(cb), arguments[2]);
 	};
 };
