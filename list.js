@@ -1,18 +1,20 @@
 'use strict';
 
-var aFrom             = require('es5-ext/array/from')
-  , compact           = require('es5-ext/array/#/compact')
-  , flatten           = require('es5-ext/array/#/flatten')
-  , iterable          = require('es5-ext/iterable/validate-object')
-  , assign            = require('es5-ext/object/assign')
-  , callable          = require('es5-ext/object/valid-callable')
-  , d                 = require('d')
-  , autoBind          = require('d/auto-bind')
-  , memoize           = require('memoizee/plain')
-  , getNormalizer     = require('memoizee/normalizers/get-1')
-  , isObservable      = require('observable-value/is-observable')
-  , isObservableValue = require('observable-value/is-observable-value')
-  , remove            = require('dom-ext/node/#/remove')
+var aFrom               = require('es5-ext/array/from')
+  , compact             = require('es5-ext/array/#/compact')
+  , flatten             = require('es5-ext/array/#/flatten')
+  , iterable            = require('es5-ext/iterable/validate-object')
+  , assign              = require('es5-ext/object/assign')
+  , callable            = require('es5-ext/object/valid-callable')
+  , isMap               = require('es6-map/is-map')
+  , d                   = require('d')
+  , autoBind            = require('d/auto-bind')
+  , memoize             = require('memoizee/plain')
+  , getOneArgNormalizer = require('memoizee/normalizers/get-1')
+  , getNormalizer       = require('memoizee/normalizers/get-fixed')
+  , isObservable        = require('observable-value/is-observable')
+  , isObservableValue   = require('observable-value/is-observable-value')
+  , remove              = require('dom-ext/node/#/remove')
 
   , DOMList, List;
 
@@ -37,9 +39,12 @@ DOMList = function (domjs, list, cb, thisArg) {
 
 Object.defineProperties(DOMList.prototype, assign({
 	build: d(function () {
+		var isKeyValue;
 		if (!this.list) return [];
-		return compact.call(flatten.call(aFrom(this.list,
-			function (item, index) { return this.buildItem(item, index); }, this)));
+		isKeyValue = isMap(this.list);
+		return compact.call(flatten.call(aFrom(this.list, function (item, index) {
+			return isKeyValue ? this.buildItem(item[1], item[0]) : this.buildItem(item, index);
+		}, this)));
 	}),
 	buildItem: d(function (item, index) {
 		return this.domjs.safeCollect(this.cb.bind(this.thisArg, item, index,
@@ -49,7 +54,8 @@ Object.defineProperties(DOMList.prototype, assign({
 		if (isObservable(this.list)) this.list.off('change', this.reload);
 		if (isObservable(newList)) {
 			if (!this.hasOwnProperty('buildItem')) {
-				this.buildItem = memoize(this.buildItem.bind(this), { normalizer: getNormalizer() });
+				this.buildItem = memoize(this.buildItem.bind(this),
+					{ normalizer: isMap(newList) ? getNormalizer(2) : getOneArgNormalizer() });
 			}
 			newList.on('change', this.reload);
 		}
