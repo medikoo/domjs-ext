@@ -1,28 +1,32 @@
 'use strict';
 
-var aFrom         = require('es5-ext/array/from')
-  , compact       = require('es5-ext/array/#/compact')
-  , flatten       = require('es5-ext/array/#/flatten')
-  , iterable      = require('es5-ext/iterable/validate-object')
-  , callable      = require('es5-ext/object/valid-callable')
-  , d             = require('d')
-  , memoize       = require('memoizee/plain')
-  , getNormalizer = require('memoizee/normalizers/get-1')
-  , isObservable  = require('observable-value/is-observable')
-  , remove        = require('dom-ext/node/#/remove')
+var aFrom             = require('es5-ext/array/from')
+  , compact           = require('es5-ext/array/#/compact')
+  , flatten           = require('es5-ext/array/#/flatten')
+  , iterable          = require('es5-ext/iterable/validate-object')
+  , assign            = require('es5-ext/object/assign')
+  , callable          = require('es5-ext/object/valid-callable')
+  , d                 = require('d')
+  , autoBind          = require('d/auto-bind')
+  , memoize           = require('memoizee/plain')
+  , getNormalizer     = require('memoizee/normalizers/get-1')
+  , isObservable      = require('observable-value/is-observable')
+  , isObservableValue = require('observable-value/is-observable-value')
+  , remove            = require('dom-ext/node/#/remove')
 
   , DOMList, List;
 
 DOMList = function (domjs, list, cb, thisArg) {
 	var df;
 	this.domjs = domjs;
-	this.list = list;
 	this.thisArg = thisArg;
 	this.location = domjs.document.createTextNode("");
 	this.cb = cb;
-	if (isObservable(list)) {
-		this.buildItem = memoize(this.buildItem.bind(this), { normalizer: getNormalizer() });
-		list.on('change', this.reload.bind(this));
+	if (isObservableValue(list)) {
+		this.onNewList(list.value);
+		list.on('change', function (event) { this.onNewList(event.newValue); }.bind(this));
+	} else {
+		this.onNewList(list);
 	}
 	this.current = this.build();
 	df = domjs.document.createDocumentFragment();
@@ -31,8 +35,9 @@ DOMList = function (domjs, list, cb, thisArg) {
 	return df;
 };
 
-Object.defineProperties(DOMList.prototype, {
+Object.defineProperties(DOMList.prototype, assign({
 	build: d(function () {
+		if (!this.list) return [];
 		return compact.call(flatten.call(aFrom(this.list,
 			function (item, index) { return this.buildItem(item, index); }, this)));
 	}),
@@ -40,6 +45,18 @@ Object.defineProperties(DOMList.prototype, {
 		return this.domjs.safeCollect(this.cb.bind(this.thisArg, item, index,
 			this.list));
 	}),
+	onNewList: d(function (newList) {
+		if (isObservable(this.list)) this.list.off('change', this.reload);
+		if (isObservable(newList)) {
+			if (!this.hasOwnProperty('buildItem')) {
+				this.buildItem = memoize(this.buildItem.bind(this), { normalizer: getNormalizer() });
+			}
+			newList.on('change', this.reload);
+		}
+		this.list = newList;
+		if (this.current) this.reload();
+	})
+}, autoBind({
 	reload: d(function () {
 		this.current.forEach(function (el) { remove.call(el); });
 		this.current = this.build();
@@ -47,7 +64,7 @@ Object.defineProperties(DOMList.prototype, {
 			this.parentNode.insertBefore(el, this);
 		}, this.location);
 	})
-});
+})));
 
 List = function (domjs, list, cb, thisArg) {
 	this.args = arguments;
@@ -61,6 +78,7 @@ Object.defineProperties(List.prototype, {
 module.exports = function (domjs/*, options*/) {
 	var options = arguments[1], name = (options && options.name) || 'list';
 	domjs.ns[name] = function (list, cb/*, thisArg*/) {
-		return new List(domjs, iterable(list), callable(cb), arguments[2]);
+		if (!isObservableValue(list)) iterable(list);
+		return new List(domjs, list, callable(cb), arguments[2]);
 	};
 };
