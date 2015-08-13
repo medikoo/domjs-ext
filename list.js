@@ -34,6 +34,7 @@ DOMList = function (domjs, list, cb, thisArg) {
 	df = domjs.document.createDocumentFragment();
 	this.current.forEach(df.appendChild, df);
 	df.appendChild(this.location);
+	df._domjsList = this;
 	return df;
 };
 
