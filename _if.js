@@ -1,14 +1,15 @@
 'use strict';
 
-var remove   = require('dom-ext/node/#/remove')
-  , _if      = require('observable-value/if')
-  , validate = require('./lib/validate-injection')
+var remove             = require('dom-ext/node/#/remove')
+  , isDocumentFragment = require('dom-ext/document-fragment/is-document-fragment')
+  , _if                = require('observable-value/if')
+  , validate           = require('./lib/validate-injection')
 
   , isArray = Array.isArray, unbind;
 
 unbind = function (data) {
 	if (data == null) return data;
-	if (data.parentNode) remove.call(data);
+	if (isDocumentFragment(data.parentNode)) remove.call(data);
 	else if (isArray(data)) data.forEach(unbind);
 	// Access value to validate eventual observable
 	// (so it's not picked by unconsumed detector)
