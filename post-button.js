@@ -9,7 +9,7 @@ module.exports = function (domjs/*, options*/) {
 	  , script = domjs.ns.script, options = arguments[1], mmap = domjs.ns.mmap;
 
 	domjs.ns[(options && options.name) || 'postButton'] = function (attrs) {
-		var id, confirm, message, value, buttonClass;
+		var id, value, buttonClass;
 		attrs = Object(attrs);
 		if (!attrs.hasOwnProperty('method')) attrs.method = 'post';
 		if (!attrs.hasOwnProperty('id')) attrs.id = 'form-' + genId();
@@ -30,4 +30,3 @@ module.exports = function (domjs/*, options*/) {
 			})];
 	};
 };
-
