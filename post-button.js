@@ -1,12 +1,12 @@
 'use strict';
 
-var genId = require('time-uuid')
-  , mmap  = require('./mmap')
+var genId     = require('time-uuid')
+  , setupMmap = require('./mmap')
 
   , slice = Array.prototype.slice;
 
 module.exports = function (domjs/*, options*/) {
-	mmap(domjs);
+	setupMmap(domjs);
 
 	var form = domjs.ns.form, p = domjs.ns.p, button = domjs.ns.button
 	  , script = domjs.ns.script, options = arguments[1], mmap = domjs.ns.mmap;
