@@ -17,12 +17,13 @@
     "url": "git://github.com/medikoo/domjs-ext.git"
   },
   "dependencies": {
-    "d": "git://github.com/medikoo/d.git",
-    "dom-ext": "git://github.com/medikoo/dom-ext.git",
-    "es5-ext": "git://github.com/medikoo/es5-ext.git",
-    "memoizee": "git://github.com/medikoo/memoize.git",
-    "observable-value": "git://github.com/medikoo/observable-value.git",
-    "time-uuid": "git://github.com/medikoo/time-uuid.git"
+    "d": "1",
+    "dom-ext": "^0.1.4",
+    "domjs": "^0.3.2",
+    "es5-ext": "^0.10.21",
+    "memoizee": "^0.4.5",
+    "observable-value": "0.1",
+    "time-uuid": "1"
   },
   "devDependencies": {
     "xlint": "^0.2.2",
